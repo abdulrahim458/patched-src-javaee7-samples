@@ -2,7 +2,7 @@
 <jboss-deployment-structure>
     <deployment>
         <dependencies>
-        	<!-- com.jayway.awaitility uses sun.reflect internally, module needed in JDK 11 -->
+        	<!-- org.awaitility uses sun.reflect internally, module needed in JDK 11 -->
             <module name="jdk.unsupported"/>
         </dependencies>
     </deployment>

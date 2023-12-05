@@ -1,37 +1,32 @@
 package org.javaee7.batch.sample.chunk.mapper;
 
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Duration.FIVE_HUNDRED_MILLISECONDS;
-import static com.jayway.awaitility.Duration.ONE_MINUTE;
-import static jakarta.batch.runtime.BatchRuntime.getJobOperator;
-import static jakarta.batch.runtime.BatchStatus.COMPLETED;
-import static jakarta.batch.runtime.BatchStatus.STARTED;
-import static jakarta.batch.runtime.Metric.MetricType.COMMIT_COUNT;
-import static jakarta.batch.runtime.Metric.MetricType.READ_COUNT;
-import static jakarta.batch.runtime.Metric.MetricType.WRITE_COUNT;
-import static org.javaee7.Libraries.awaitability;
-import static org.javaee7.batch.sample.chunk.mapper.MyItemReader.totalReaders;
-import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
-import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
-import static org.junit.Assert.assertEquals;
+import jakarta.batch.operations.JobOperator;
+import jakarta.batch.runtime.JobExecution;
+import jakarta.batch.runtime.Metric;
+import jakarta.batch.runtime.StepExecution;
+import org.javaee7.util.BatchTestHelper;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 
-import jakarta.batch.operations.JobOperator;
-import jakarta.batch.runtime.JobExecution;
-import jakarta.batch.runtime.Metric;
-import jakarta.batch.runtime.StepExecution;
-
-import org.javaee7.util.BatchTestHelper;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static jakarta.batch.runtime.BatchRuntime.getJobOperator;
+import static jakarta.batch.runtime.BatchStatus.COMPLETED;
+import static jakarta.batch.runtime.BatchStatus.STARTED;
+import static jakarta.batch.runtime.Metric.MetricType.*;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Durations.FIVE_HUNDRED_MILLISECONDS;
+import static org.awaitility.Durations.ONE_MINUTE;
+import static org.javaee7.Libraries.awaitability;
+import static org.javaee7.batch.sample.chunk.mapper.MyItemReader.totalReaders;
+import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
+import static org.junit.Assert.assertEquals;
 
 /**
  * The Batch specification provides a Chunk Oriented processing style. This style is defined by enclosing into a

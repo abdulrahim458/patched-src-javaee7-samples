@@ -16,16 +16,15 @@
  */
 package org.javaee7.jca.filewatch;
 
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Duration.FIVE_HUNDRED_MILLISECONDS;
-import static com.jayway.awaitility.Duration.ONE_MINUTE;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Durations.FIVE_HUNDRED_MILLISECONDS;
+import static org.awaitility.Durations.ONE_MINUTE;
 import jakarta.enterprise.context.Dependent;
 import static java.lang.System.out;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.javaee7.jca.filewatch.event.FileEvent.Type.CREATED;
 import static org.javaee7.jca.filewatch.event.FileEvent.Type.DELETED;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
-import static org.jboss.shrinkwrap.api.asset.EmptyAsset.INSTANCE;
 
 import java.io.File;
 import java.util.concurrent.Callable;
@@ -81,7 +80,7 @@ public class FileWatcherTest {
             .addAsLibraries(
                 Maven.resolver()
                     .loadPomFromFile("pom.xml")
-                    .resolve("org.assertj:assertj-core", "com.jayway.awaitility:awaitility")
+                    .resolve("org.assertj:assertj-core", "org.awaitility:awaitility")
                     .withTransitivity()
                     .as(JavaArchive.class))
             ;

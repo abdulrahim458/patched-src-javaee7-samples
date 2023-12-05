@@ -15,8 +15,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-
-import static com.jayway.awaitility.Awaitility.*;
+import java.util.concurrent.Callable;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -48,7 +49,7 @@ public class MyAsyncEndpointTest {
 
         session.getAsyncRemote().sendText(TEST_MESSAGE);
 
-        await().untilCall(to(endpoint).getReceivedMessage(), is(equalTo(TEST_MESSAGE)));
+        await().until(isEqualToMessage(endpoint));
     }
 
     @Test
@@ -60,7 +61,8 @@ public class MyAsyncEndpointTest {
 
         session.getAsyncRemote().sendBinary(buffer);
 
-        await().untilCall(to(endpoint).getReceivedMessage(), is(notNullValue()));
+        await().until(isNotNull(endpoint));
+
         String receivedString = bufferToString(endpoint.getReceivedMessage());
         assertThat(receivedString, is(equalTo(TEST_MESSAGE)));
     }
@@ -84,5 +86,12 @@ public class MyAsyncEndpointTest {
             + base.getPort()
             + base.getPath()
             + uriPart);
+    }
+
+    private Callable<Boolean> isEqualToMessage(MyAsyncEndpointTextClient myAsyncEndpointTextClient) {
+        return () -> myAsyncEndpointTextClient.getReceivedMessage() != null && myAsyncEndpointTextClient.getReceivedMessage().equals(TEST_MESSAGE);
+    }
+    private Callable<Boolean> isNotNull(MyAsyncEndpointByteBufferClient message) {
+        return () -> message.getReceivedMessage() != null;
     }
 }

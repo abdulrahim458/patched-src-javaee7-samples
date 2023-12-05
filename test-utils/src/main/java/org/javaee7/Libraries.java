@@ -8,7 +8,7 @@ public class Libraries {
     public static JavaArchive[] awaitability() {
         return Maven.resolver()
                 .loadPomFromFile("pom.xml")
-                .resolve("org.assertj:assertj-core", "com.jayway.awaitility:awaitility")
+                .resolve("org.assertj:assertj-core", "org.awaitility:awaitility")
                 .withTransitivity()
                 .as(JavaArchive.class);
     }

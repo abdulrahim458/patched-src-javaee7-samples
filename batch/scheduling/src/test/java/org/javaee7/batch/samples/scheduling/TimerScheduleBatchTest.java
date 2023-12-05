@@ -1,12 +1,12 @@
 package org.javaee7.batch.samples.scheduling;
 
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Duration.FIVE_HUNDRED_MILLISECONDS;
-import static com.jayway.awaitility.Duration.ONE_MINUTE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static jakarta.batch.runtime.BatchRuntime.getJobOperator;
 import static jakarta.batch.runtime.BatchStatus.COMPLETED;
 import static jakarta.batch.runtime.BatchStatus.STARTED;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Durations.FIVE_HUNDRED_MILLISECONDS;
+import static org.awaitility.Durations.ONE_MINUTE;
 import static org.javaee7.Libraries.awaitability;
 import static org.javaee7.batch.samples.scheduling.MyStepListener.countDownLatch;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;

@@ -15,7 +15,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.jayway.awaitility.Awaitility.*;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -31,7 +31,7 @@ public class AsyncClassBeanTest {
     @Deployment
     public static WebArchive createDeployment() {
         File[] jars = Maven.resolver().loadPomFromFile("pom.xml")
-            .resolve("com.jayway.awaitility:awaitility")
+            .resolve("org.awaitility:awaitility")
             .withTransitivity().asFile();
 
         return ShrinkWrap.create(WebArchive.class)

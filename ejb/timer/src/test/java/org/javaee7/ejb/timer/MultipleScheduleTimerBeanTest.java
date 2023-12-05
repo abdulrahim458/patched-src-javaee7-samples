@@ -1,15 +1,14 @@
 package org.javaee7.ejb.timer;
 
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Awaitility.to;
+import static org.awaitility.Awaitility.await;
 import static java.lang.Math.min;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.javaee7.ejb.timer.WithinWindowMatcher.withinWindow;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 
 import jakarta.inject.Inject;
 
@@ -36,7 +35,7 @@ public class MultipleScheduleTimerBeanTest {
     public static WebArchive deploy() {
         return create(WebArchive.class)
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml")
-                        .resolve("com.jayway.awaitility:awaitility")
+                        .resolve("org.awaitility:awaitility")
                         .withTransitivity().asFile())
                 .addClasses(WithinWindowMatcher.class, Ping.class, PingsListener.class, MultipleScheduleTimerBean.class)
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/jboss-deployment-structure.xml"));
@@ -44,7 +43,7 @@ public class MultipleScheduleTimerBeanTest {
 
     @Test
     public void should_receive_three_pings() {
-        await().untilCall(to(pings.getPings()).size(), greaterThanOrEqualTo(3));
+        await().until(pingsGreaterThanThree());
 
         Ping firstPing = pings.getPings().get(0);
         Ping secondPing = pings.getPings().get(1);
@@ -60,5 +59,9 @@ public class MultipleScheduleTimerBeanTest {
         
         // Note; this is quite sensitive to slow CI systems.
         assertThat(smallerDelay, is(withinWindow(TIMEOUT, TOLERANCE)));
+    }
+
+    private Callable<Boolean> pingsGreaterThanThree(){
+        return () -> pings.getPings().size() >= 3;
     }
 }

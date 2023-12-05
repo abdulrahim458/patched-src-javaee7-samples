@@ -1,14 +1,13 @@
 package org.javaee7.ejb.timer;
 
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Awaitility.to;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.javaee7.ejb.timer.WithinWindowMatcher.withinWindow;
 import static org.jboss.shrinkwrap.api.ShrinkWrap.create;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 
 import jakarta.inject.Inject;
 
@@ -36,7 +35,7 @@ public class ProgrammaticTimerBeanTest {
         return create(WebArchive.class)
                 .addAsLibraries(
                     Maven.resolver().loadPomFromFile("pom.xml")
-                        .resolve("com.jayway.awaitility:awaitility")
+                        .resolve("org.awaitility:awaitility")
                         .withTransitivity().asFile())
                 .addClasses(
                     WithinWindowMatcher.class, 
@@ -50,8 +49,8 @@ public class ProgrammaticTimerBeanTest {
     @Test
     public void should_receive_two_pings() {
         await()
-            .untilCall(
-                to(pings.getPings()).size(), greaterThanOrEqualTo(2));
+            .until(
+                pingsGreaterThanTwo());
 
         Ping firstPing = pings.getPings().get(0);
         Ping secondPing = pings.getPings().get(1);
@@ -60,5 +59,9 @@ public class ProgrammaticTimerBeanTest {
         System.out.println("Actual timeout = " + delay);
         
         assertThat(delay, is(withinWindow(TIMEOUT, TOLERANCE)));
+    }
+
+    private Callable<Boolean> pingsGreaterThanTwo(){
+        return () -> pings.getPings().size() >= 2;
     }
 }
