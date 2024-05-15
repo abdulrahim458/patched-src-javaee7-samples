@@ -41,6 +41,19 @@
                 <module>payara-glassfish</module>
             </modules>
         </profile>
+        
+        <profile>
+            <id>payara4</id>
+            <activation>
+                <property>
+                    <name>payara.version</name>
+                    <value>/4.*/</value>
+                </property>
+            </activation>
+            <properties>
+                <glassfish.client.version>4.0</glassfish.client.version>
+            </properties>
+        </profile>
     </profiles>
 
 </project>
